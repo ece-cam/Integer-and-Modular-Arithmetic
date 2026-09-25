@@ -34,6 +34,8 @@ def decode(number: str, radix: int) -> list:
         digit = digit_value(d, radix)
         chunks = insert_digit(chunks, digit, radix)
 
+    return is_negative, chunks
+    
 
 def insert_digit(chunks, digit, radix):
     """
@@ -49,7 +51,7 @@ def insert_digit(chunks, digit, radix):
         chunks.append(carry % BASE)
         carry //= BASE
     return chunks
-        
+
 
 
 class radixConversionv2:
