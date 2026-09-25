@@ -9,9 +9,9 @@
 #
 # Author names and student IDs:
 # Fabrizio Bulzinetti (2322234) 
-# author_name_2 (author_student_ID_2)
-# author_name_3 (author_student_ID_3)
-# author_name_4 (author_student_ID_4)
+# Eda Gunes (2246945)
+# Defne Aydin (2284553)
+# Ece Camurlu (2244098)
 ##
 
 # Import built-in json library for handling input/output 
