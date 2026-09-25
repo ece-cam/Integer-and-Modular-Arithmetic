@@ -14,6 +14,7 @@ def digit_value(c, radix):
         raise ValueError(f"digit '{c}' (value {v}) is not valid for radix {radix}")
     return v
 
+BASE = 2**16  # Base for internal representation 
 
 def encode(number: str, radix: int) -> list:
     """
@@ -27,11 +28,21 @@ def encode(number: str, radix: int) -> list:
         is_negative = True
         number = number[1:]
 
-    chunks = []
-    old_value = 0
+    chunks = [0]
+
     for d in number:
         digit = digit_value(d, radix)
-        value = number.index[digit] * radix + old_value
+
+        old_value = chunks[-1]
+        value = old_value * radix + digit
+
+        if value >= BASE:
+            carry = value // BASE
+            chunks[-1] = value % BASE
+            chunks.append(carry)
+        else:
+            chunks[-1] = value
+
         old_value = value
 
 
