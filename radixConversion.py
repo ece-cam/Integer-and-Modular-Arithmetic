@@ -54,7 +54,7 @@ def insert_digit(chunks, digit, radix):
 
 
 
-class radixConversionv2:
+class radixConversion:
     
     def __init__(self, number, base):
         self.number = number
