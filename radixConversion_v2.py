@@ -36,9 +36,19 @@ def decode(number: str, radix: int) -> list:
 
 
 def insert_digit(chunks, digit, radix):
-    carry = digit
+    """
+    Multiplies the whole limb list by `radix` and adds `digit`,
+    propagating carry across every limb (not just the last one).
+    """
+    carry = digit  # the digit being added in is the starting carry
     for i in range(len(chunks)):
-        temp_value = chunks[i] * radix + carry
+        value = chunks[i] * radix + carry
+        chunks[i] = value % BASE
+        carry = value // BASE
+    while carry > 0:
+        chunks.append(carry % BASE)
+        carry //= BASE
+    return chunks
         
 
 
