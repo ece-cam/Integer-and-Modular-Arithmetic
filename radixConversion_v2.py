@@ -16,7 +16,7 @@ def digit_value(c, radix):
 
 BASE = 2**16  # Base for internal representation 
 
-def encode(number: str, radix: int) -> list:
+def decode(number: str, radix: int) -> list:
     """
     Converts a string number in a given radix in a list of integers representing the number in base 2^16.
     """
@@ -55,5 +55,11 @@ class radixConversionv2:
     
         
 
-    def decode():
-        pass
+    def encode(digits, base):
+        """
+        Converts a list of digits in the given base into its numeric value.
+        """
+        value = 0
+        for d in digits:
+            value = value * base + d
+        return value
