@@ -58,7 +58,7 @@ class radixConversionv2:
     
     def __init__(self, number, base):
         self.number = number
-        if not self
+        
 
         if not base >= 2:
             raise ValueError("Base must be greater than or equal to 2.")
