@@ -1,22 +1,3 @@
-DIGIT_VALUES = {
-    "0": 0,
-    "1": 1,
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "A": 10,
-    "B": 11,
-    "C": 12,
-    "D": 13,
-    "E": 14,
-    "F": 15
-}
-
 def digit_value(c, radix):
     """
     Returns the integer value of a digit character for a given radix.
@@ -34,16 +15,25 @@ def digit_value(c, radix):
     return v
 
 
+def encode(number: str, radix: int) -> list:
+    """
+    Converts a string number in a given radix in a list of integers representing the number in base 2^16.
+    """
+    if radix < 2:
+        raise ValueError("Radix must be greater than or equal to 2.")
+
 
 class radixConversionv2:
+    
     def __init__(self, number, base):
         self.number = number
+        if not self
 
         if not base >= 2:
             raise ValueError("Base must be greater than or equal to 2.")
         self.base = base
     
-    def encode():
+    
         
 
     def decode():
