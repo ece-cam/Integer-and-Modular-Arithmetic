@@ -61,7 +61,7 @@ class radixConversionv2:
 
     def decode(digits, base):
         """
-        Converts a list of digits in the given base into its numeric.
+        Converts a list of digits in the given base into its numeric value.
         """
         value = 0
         for d in digits:
