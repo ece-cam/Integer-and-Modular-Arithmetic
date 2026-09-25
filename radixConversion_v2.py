@@ -32,18 +32,14 @@ def encode(number: str, radix: int) -> list:
 
     for d in number:
         digit = digit_value(d, radix)
+        chunks = insert_digit(chunks, digit, radix)
 
-        old_value = chunks[-1]
-        value = old_value * radix + digit
 
-        if value >= BASE:
-            carry = value // BASE
-            chunks[-1] = value % BASE
-            chunks.append(carry)
-        else:
-            chunks[-1] = value
-
-        old_value = value
+def insert_digit(chunks, digit, radix):
+    carry = digit
+    for i in range(len(chunks)):
+        temp_value = chunks[i] * radix + carry
+        
 
 
 class radixConversionv2:
