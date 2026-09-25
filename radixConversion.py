@@ -1,3 +1,6 @@
+BASE = 2**16  # Base for internal representation 
+
+
 def digit_value(c, radix):
     """
     Returns the integer value of a digit character for a given radix.
@@ -14,7 +17,6 @@ def digit_value(c, radix):
         raise ValueError(f"digit '{c}' (value {v}) is not valid for radix {radix}")
     return v
 
-BASE = 2**16  # Base for internal representation 
 
 def decode(number: str, radix: int) -> list:
     """
@@ -36,7 +38,6 @@ def decode(number: str, radix: int) -> list:
 
     return is_negative, chunks
     
-
 def insert_digit(chunks, digit, radix):
     """
     Multiplies the whole limb list by `radix` and adds `digit`,
@@ -51,27 +52,13 @@ def insert_digit(chunks, digit, radix):
         chunks.append(carry % BASE)
         carry //= BASE
     return chunks
-
-
-
-class radixConversion:
     
-    def __init__(self, number, base):
-        self.number = number
-        
 
-        if not base >= 2:
-            raise ValueError("Base must be greater than or equal to 2.")
-        self.base = base
-    
-    
-        
-
-    def encode(digits, base):
-        """
-        Converts a list of digits in the given base into its numeric value.
-        """
-        value = 0
-        for d in digits:
-            value = value * base + d
-        return value
+def encode(digits, base):
+    """
+    Converts a list of digits in the given base into its numeric value.
+    """
+    value = 0
+    for d in digits:
+        value = value * base + d
+    return value
