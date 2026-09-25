@@ -54,11 +54,23 @@ def insert_digit(chunks, digit, radix):
     return chunks
     
 
-def encode(digits, base):
+def encode(chunks, base, radix):
     """
-    Converts a list of digits in the given base into its numeric value.
+    Converts a list of digits in the given base into its numeric value
     """
-    value = 0
-    for d in digits:
-        value = value * base + d
-    return value
+    if radix < 2:
+        raise ValueError("Radix must be greater than or equal to 2.")
+    
+    chunks = chunks[:]
+    digits = []
+
+    while not (len(chunks) == 1 and chunks[0] == 0):
+        digit, chunks = extract_digit(chunks, radix)
+        digits.append(digit_char(digit))
+
+    if not digits:
+        digits.append("0")
+    if is_negative:
+        digits.append("-")
+
+    return "".join(reversed(digits))
