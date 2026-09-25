@@ -22,6 +22,18 @@ def encode(number: str, radix: int) -> list:
     if radix < 2:
         raise ValueError("Radix must be greater than or equal to 2.")
 
+    is_negative = False
+    if number.startswith("-"):
+        is_negative = True
+        number = number[1:]
+
+    chunks = []
+    old_value = 0
+    for d in number:
+        digit = digit_value(d, radix)
+        value = number.index[digit] * radix + old_value
+        old_value = value
+
 
 class radixConversionv2:
     
