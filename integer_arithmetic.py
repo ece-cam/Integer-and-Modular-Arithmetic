@@ -16,6 +16,15 @@ def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     Returns:
         SignAndMagnitude: The sum of a and b represented in sign and magnitude.
     """
+    if a.is_negative != b.is_negative:
+        if compare(a, b) >= 0:
+            c = subtraction(a, b)
+            c.is_negative = a.is_negative
+        else:
+            c = subtraction(b, a)
+            c.is_negative = b.is_negative
+        return c
+
     n = max(len(a.magnitude), len(b.magnitude)) 
     c = SignAndMagnitude(False, [])
     carry = 0
@@ -23,7 +32,7 @@ def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     for i in range(n):
         # Pad the shorter list with zeros to make them the same length
         ai = a.magnitude[i] if i < len(a.magnitude) else 0
-        bi = b[i] if i < len(b.magnitude) else 0
+        bi = b.magnitude[i] if i < len(b.magnitude) else 0
 
         # Temporary c digit at position i
         ci = ai + bi + carry
@@ -41,6 +50,8 @@ def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     # If there's a carry at the end, add a final digit 1
     if carry == 1:
         c.magnitude.append(1)
+
+    c.is_negative = a.is_negative
     return c
 
 
@@ -98,7 +109,6 @@ def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     Returns:
         c (SignAndMagnitude): The difference of a and b represented in sign and magnitude.
     """
-    n = max(len(a.magnitude), len(b.magnitude))
     c = SignAndMagnitude(False, [])
     carry = 0
 
