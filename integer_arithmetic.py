@@ -217,11 +217,20 @@ def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     for i in range(k - 1, -1, -1):
         # Shift the base of b to the left according to most significant digit
         shifted = SignAndMagnitude(False, [0] * i + b_abs.magnitude)
-        
-        qi = 0
-        while compare(r, shifted) != -1:
-            r = subtraction(r, shifted)
-            qi += 1
+
+        # Binary search for the largest digit that can be subtracted
+        lo, hi = 0, BASE - 1
+        while lo < hi:
+            mid = (lo + hi + 1) // 2   
+            prod = primaryMultiplication(SignAndMagnitude(False, [mid]), shifted, BASE)
+            if compare(prod, r) != 1:
+                lo = mid
+            else:
+                hi = mid - 1
+        qi = lo
+
+        prod = primaryMultiplication(SignAndMagnitude(False, [qi]), shifted, BASE)
+        r = subtraction(r, prod)
         q_digits[i] = qi
 
     # Strip leading zeros from the quotient
