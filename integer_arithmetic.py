@@ -125,8 +125,20 @@ def subtraction(self, x: list, y: list) -> list:
 
 
 
-def multiplication(self):
-    pass
+def primaryMultplication(x,y,b):
+    m=len(x)
+    n=len(y)
+    z = [0] * (m + n)   
+    for i in range(0, m):  
+        c=0
+        for j in range(0, n):  
+          t = z[i+j] + x[i]*y[j] + c
+          c = t // b               
+          z[i + j] = t - c * b        
+          z[i + n] = c     
+        z[i + n] = c
+return strip_zeros(z)
+
 
 def division(self):
     pass
