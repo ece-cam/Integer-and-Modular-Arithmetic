@@ -1,6 +1,26 @@
 BASE = 2**16  # Base for internal representation 
 
 
+class SignAndMagnitude:
+    """
+    Represents a class for sign and magnitude representation of integers.
+    Attributes:
+        is_negative (bool): The sign of the integer, either True or False.
+        magnitude (list): A list of integers representing the magnitude of the integer.
+    """
+    def __init__(self, is_negative: bool, magnitude: list):
+        """
+        Initializes a SignAndMagnitude object with the given sign and magnitude.
+        Args:
+            is_negative (bool): The sign of the integer, either True or False.
+            magnitude (list): A list of integers representing the magnitude of the integer.
+        """
+        self.is_negative = is_negative
+        self.magnitude = magnitude
+
+
+
+
 def digit_value(c, radix):
     """
     Returns the integer value of a digit character for a given radix.
@@ -16,27 +36,6 @@ def digit_value(c, radix):
     if v >= radix:
         raise ValueError(f"digit '{c}' (value {v}) is not valid for radix {radix}")
     return v
-
-
-def decode(number: str, radix: int) -> list:
-    """
-    Converts a string number in a given radix in a list of integers representing the number in base 2^16.
-    """
-    if radix < 2:
-        raise ValueError("Radix must be greater than or equal to 2.")
-
-    is_negative = False
-    if number.startswith("-"):
-        is_negative = True
-        number = number[1:]
-
-    chunks = [0]
-
-    for d in number:
-        digit = digit_value(d, radix)
-        chunks = insert_digit(chunks, digit, radix)
-
-    return is_negative, chunks
     
 def insert_digit(chunks, digit, radix):
     """
@@ -44,15 +43,43 @@ def insert_digit(chunks, digit, radix):
     propagating carry across every limb (not just the last one).
     """
     carry = digit  # the digit being added in is the starting carry
+
+    # Propagate carry across all limbs
     for i in range(len(chunks)):
         value = chunks[i] * radix + carry
         chunks[i] = value % BASE
         carry = value // BASE
+
     while carry > 0:
         chunks.append(carry % BASE)
         carry //= BASE
     return chunks
-    
+
+
+
+def decode(number_str: str, radix: int) -> list:
+    """
+    Converts a string number in a given radix in a list of integers 
+    representing the number in base 2^16.
+    """
+    if radix < 2:
+        raise ValueError("Radix must be greater than or equal to 2.")
+
+    number = SignAndMagnitude([0], False)
+
+    # Handle negative numbers
+    number.is_negative = False
+    if number_str.startswith("-"):
+        number.is_negative = True
+        number_str = number_str[1:]
+
+    # Iterate character, convert and insert into chunks
+    for d in number_str:
+        digit = digit_value(d, radix)
+        number.magnitude = insert_digit(number.magnitude, digit, radix)
+    return number.is_negative, number.magnitude
+
+
 
 def encode(chunks, base, radix):
     """

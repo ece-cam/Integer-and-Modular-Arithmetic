@@ -1,7 +1,7 @@
 from radixConversion import SignAndMagnitude
 
 
-BASE = 2**16
+BASE = 2 ** 16
 
 
 
@@ -148,7 +148,7 @@ def pad(a, n):
 
 
 
-def extended_auclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
+def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     """
     Performs the Extended Euclidean Algorithm on two numbers a and b.
     
