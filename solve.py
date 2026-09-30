@@ -16,6 +16,7 @@
 
 # Import built-in json library for handling input/output 
 import json
+from modular_arithmetic import modular_addition, modular_reduction
 from radixConversion import decode, encode, BASE, SignAndMagnitude
 from integer_arithmetic import extended_euclidian_algorithm, integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
 
@@ -56,7 +57,11 @@ def solve_exercise(exercise_location : str, answer_location : str):
         # Check what operation within the integer arithmetic operations we need to solve
         if exercise["operation"] == "addition":
             # Solve integer arithmetic addition exercise
-            integer_addition()
+            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+            result =integer_addition(a, b)
+            answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+
         elif exercise["operation"] == "subtraction":
             # Solve integer arithmetic subtraction exercise
             integer_subtraction()
@@ -74,7 +79,11 @@ def solve_exercise(exercise_location : str, answer_location : str):
         # Check what operation within the modular arithmetic operations we need to solve
         if exercise["operation"] == "reduction":
             # Solve modular arithmetic reduction exercise
-            pass
+            modular_reduction()
+        elif exercise["operation"] == "addition":
+            # Solve modular arithmetic addition exercise
+            modular_addition()
+
         # et cetera
 
 

@@ -228,14 +228,14 @@ def integer_division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
         lo, hi = 0, BASE - 1
         while lo < hi:
             mid = (lo + hi + 1) // 2   
-            prod = integer_multiplication(SignAndMagnitude(False, [mid]), shifted, BASE)
+            prod = integer_multiplication(SignAndMagnitude(False, [mid]), shifted)
             if compare(prod, r) != 1:
                 lo = mid
             else:
                 hi = mid - 1
         qi = lo
 
-        prod = integer_multiplication(SignAndMagnitude(False, [qi]), shifted, BASE)
+        prod = integer_multiplication(SignAndMagnitude(False, [qi]), shifted)
         r = integer_subtraction(r, prod)
         q_digits[i] = qi
 
@@ -280,12 +280,12 @@ def extended_euclidian_algorithm(a: SignAndMagnitude, b: SignAndMagnitude) -> tu
         b_prime = r
 
         #x3 = x1 - q * x2
-        q_times_x2 = integer_multiplication(q, x2, BASE)
+        q_times_x2 = integer_multiplication(q, x2)
         q_times_x2.is_negative = not q_times_x2.is_negative 
         x3 = integer_addition(x1, q_times_x2)
 
         #y3 = y1 - q * y2
-        q_times_y2 = integer_multiplication(q, y2, BASE)
+        q_times_y2 = integer_multiplication(q, y2)
         q_times_y2.is_negative = not q_times_y2.is_negative
         y3 = integer_addition(y1, q_times_y2)
 
