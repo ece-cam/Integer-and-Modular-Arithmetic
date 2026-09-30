@@ -54,7 +54,7 @@ def modular_inversion(a, m) -> SignAndMagnitude:
         # the old divisor becomes the dividend
         # the remainder becomes the new divisor
 
-        qx2 = integer_multiplication(q, x2, BASE)
+        qx2 = integer_multiplication(q, x2)
         if qx2.magnitude != [0]: 
             qx2.is_negative = not qx2.is_negative
         x3 = integer_addition(x1, qx2)
