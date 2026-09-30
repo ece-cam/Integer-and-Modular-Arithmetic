@@ -117,6 +117,8 @@ def encode(chunks, base, radix):
     return result
 
 
+
+
 if __name__ == "__main__":
     # Example usage
     number_str = "-1999"

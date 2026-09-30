@@ -16,7 +16,21 @@
 
 # Import built-in json library for handling input/output 
 import json
-from radixConversion import radixConversion
+from .radixConversion import decode, encode, BASE, SignAndMagnitude
+from .integer_arithmetic import strip_zeros
+
+
+
+def strToSignAndMagnitude(num_str: str, radix: int) -> SignAndMagnitude:
+    return decode(num_str, radix)
+
+def signAndMagnitudeToStr(num: SignAndMagnitude, radix: int) -> str:
+    if num.is_negative:
+        if strip_zeros(num).magnitude == [0]:
+            return "0"
+        return "-" + encode(num.magnitude, BASE, radix)
+    return encode(num.magnitude, BASE, radix)
+
 
 
 
@@ -34,6 +48,8 @@ def solve_exercise(exercise_location : str, answer_location : str):
         
 
     ### Parse and solve ###
+    answer = {"answer": None}
+
 
     # Check type of exercise
     if exercise["type"] == "integer_arithmetic":
