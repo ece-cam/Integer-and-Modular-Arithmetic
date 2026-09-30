@@ -1,6 +1,3 @@
-
-
-
 BASE = 2**16  # Base for internal representation 
 
 

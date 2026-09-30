@@ -14,28 +14,28 @@ def addition(self, a: list, b: list) -> list:
     """
     n = max(len(a), len(b)) 
     c = [0]
-    c = 0
+    carry = 0
 
     for i in range(n):
         # Pad the shorter list with zeros to make them the same length
-        xi = a[i] if i < len(a) else 0
-        yi = b[i] if i < len(b) else 0
+        ai = a[i] if i < len(a) else 0
+        bi = b[i] if i < len(b) else 0
 
         # Temporary c digit at position i
-        zi = xi + yi + c
+        ci = ai + bi + carry
 
         # Handle carry if overflow occurs
-        if zi >= BASE:
-            zi -= BASE
-            c = 1
+        if ci >= BASE:
+            ci -= BASE
+            carry = 1
         else:
-            c = 0
+            carry = 0
 
         # Computed digit is appended
-        c.append(zi)
+        c.append(ci)
 
     # If there's a carry at the end, add a final digit 1
-    if c == 1:
+    if carry == 1:
         c.append(1)
     return c
 
@@ -95,26 +95,26 @@ def subtraction(self, a: list, b: list) -> list:
     """
     n = max(len(a), len(b))
     c = [0]
-    c = 0
+    carry = 0
 
     for i in range(len(a)):
         # State the current digit for b
         if len(b) > i:
-            yi = b[i]
+            bi = b[i]
         else:
-            yi = 0
+            bi = 0
 
         # Compute the temporary c digit at position i
-        zi = a[i] - yi - c
+        ci = a[i] - bi - carry
 
         # Handle borrow if underflow occurs
-        if zi < 0:
-            zi += BASE
-            c = 1
+        if ci < 0:
+            ci += BASE
+            carry = 1
         else:
-            c = 0
+            carry = 0
 
-        c.append(zi)
+        c.append(ci)
     return strip_zeros(c)
 
 
