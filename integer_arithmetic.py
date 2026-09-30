@@ -203,15 +203,21 @@ def integer_division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     Returns:
         tuple: A tuple containing the quotient and remainder of the division.
     """
+    # Check for division by 0
+    b_stripped = strip_zeros(SignAndMagnitude(False, b.magnitude.copy()))
+    if b_stripped.magnitude == [0]:
+        raise ZeroDivisionError("Cannot divide by 0")
+
+    #Strip leading 0's
     # Initiate the positive copies of a and b
-    a_abs = SignAndMagnitude(False, a.magnitude.copy())
-    b_abs = SignAndMagnitude(False, b.magnitude.copy())
+    a_abs = strip_zeros(SignAndMagnitude(False, a.magnitude.copy()))
+    b_abs = b_stripped
 
     m, n = len(a_abs.magnitude), len(b_abs.magnitude)
     k = m - n + 1   # Number of digits in the quotient
 
     q_digits = [0] * max(k, 1)
-    r = a_abs.copy()
+    r = SignAndMagnitude(False, a_abs.magnitude.copy())
 
     # Main loop from most significant q digit to least.
     for i in range(k - 1, -1, -1):
