@@ -178,7 +178,19 @@ def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndM
     return z
  
 def pad(a, n):
-    #pad function, used for making a number a n digits long.
+        """
+    Makes a number n digits long by adding zeros at the end of the list.
+    Index 0 is the least significant digit, so the zeros at the end are
+    leading zeros and the value of the number does not change.
+ 
+    Args:
+        a (list): The digits of the number, least significant digit first.
+        n (int): The length the list should have.
+    Returns:
+        list: The digits of a followed by n - len(a) zeros,
+              or a unchanged if it is already n digits long or longer 
+              than n digits.
+    """
     return a + [0] * (n - len(a))
 
 def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n) -> SignAndMagnitude:
