@@ -48,15 +48,15 @@ def modular_inversion(a, m) -> SignAndMagnitude:
     # Run the Euclidean algorithm until the remainder is 0
     while m_prime.magnitude != [0]:
         # q is the quotient and r is the remainder
-        q, r = division(a_prime / m_prime)
+        q, r = integer_division(a_prime, m_prime)
         a_prime, m_prime = m_prime, r 
         # the old divisor becomes the dividend
         # the remainder becomes the new divisor
 
-        qx2 = primaryMultiplication(q, x2, BASE)
+        qx2 = integer_multiplication(q, x2, BASE)
         if qx2.magnitude != [0]: 
             qx2.is_negative = not qx2.is_negative
-        x3 = addition(x1, qx2)
+        x3 = integer_addition(x1, qx2)
 
         x1, x2 = x2, x3 
 
@@ -66,4 +66,4 @@ def modular_inversion(a, m) -> SignAndMagnitude:
         raise ValueError("inverse does not exist")
 
     # x1 can be negative or larger than m, so reduce it into {0, ..., m-1}
-    return reduction(x1, m)
+    return modular_reduction(x1, m)

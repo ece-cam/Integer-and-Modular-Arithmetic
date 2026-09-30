@@ -194,7 +194,7 @@ def pad(a, n):
     return a + [0] * (n - len(a))
 
 def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n) -> SignAndMagnitude:
-      """
+    """
     Performs multiplication of two numbers a and b using the Karatsuba algorithm.
     Splits both numbers in a low and a high half and uses three recursive
     multiplications instead of four:
