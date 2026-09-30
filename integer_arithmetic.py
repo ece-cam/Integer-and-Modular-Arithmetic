@@ -202,17 +202,35 @@ def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     Returns:
         tuple: A tuple containing the quotient and remainder of the division.
     """
-    if compare(a, b) == -1:
-        a = b.copy()
-        b = a.copy()
+    # Initiate the positive copies of a and b
+    a_abs = SignAndMagnitude(False, a.magnitude.copy())
+    b_abs = SignAndMagnitude(False, b.magnitude.copy())
 
-    # 
-    q = SignAndMagnitude(False, [0])
-    r = a
-    k = 
+    m, n = len(a_abs.magnitude), len(b_abs.magnitude)
+    k = m - n + 1   # Number of digits in the quotient
 
+    r = a_abs.copy()
+    q_digits = []
+    q_digits = pad(q_digits, max(k, 1))
 
+    for i in range(k - 1, -1, -1):
+        shifted = SignAndMagnitude(False, [0] * i + b_abs.magnitude)   # b * BASE^i
+        qi = 0
+        while compare(r, shifted) != -1:   # while r >= b * BASE^i
+            r = subtraction(r, shifted)
+            qi += 1
+        q_digits[i] = qi
 
+    while len(q_digits) > 1 and q_digits[-1] == 0:   # strip leading zeros
+        q_digits.pop()
+    q = SignAndMagnitude(False, q_digits)
+
+    # Sign fix so that 0 <= r < |b|
+    if a.negative and r.magnitude != [0]:
+        q = addition(q, SignAndMagnitude(False, [1]))
+        r = subtraction(b_abs, r)
+
+    q.negative = (a.negative != b.negative) and q.magnitude != [0]
     return q, r
 
 
