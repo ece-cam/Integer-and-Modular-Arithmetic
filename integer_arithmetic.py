@@ -133,11 +133,6 @@ def integer_subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagn
     return strip_zeros(c)
 
 
-
-
-
-
-
 def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     m=len(a.magnitude)
     n=len(b.magnitude)
@@ -160,9 +155,9 @@ def pad(a, n):
     #pad function, used for making a number a n digits long.
     return a + [0] * (n - len(a))
 
-def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagnitude:
+def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n) -> SignAndMagnitude:
     if n == 1:
-        return integer_multiplication(a, b, base)
+        return integer_multiplication(a, b)
 
     if n % 2 == 1:                              
         n = n + 1
@@ -174,13 +169,13 @@ def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> Sign
     a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
     b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
-    z2 = integer_karatsuba(a_high, b_high, h, base)              
-    z0 = integer_karatsuba(a_low, b_low, h, base)  
+    z2 = integer_karatsuba(a_high, b_high, h)              
+    z0 = integer_karatsuba(a_low, b_low, h)  
 
     sum_a = integer_addition(a_high, a_low)
     sum_b = integer_addition(b_high, b_low)      
 
-    z1_recursive = integer_karatsuba(sum_a, sum_b, h, base)
+    z1_recursive = integer_karatsuba(sum_a, sum_b, h)
     z1 = integer_subtraction(integer_subtraction(z1_recursive, z0), z2)   
 
     shifted_z2 = SignAndMagnitude(False, [0] * n + z2.magnitude)
