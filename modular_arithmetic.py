@@ -17,6 +17,7 @@ def modular_addition(a: SignAndMagnitude, b: SignAndMagnitude, m: SignAndMagnitu
     return modular_reduction(sum_ab, m)
 
 def modular_subtraction(a: SignAndMagnitude, b: SignAndMagnitude, m: SignAndMagnitude) -> SignAndMagnitude:
+    neg_b = SignAndMagnitude(not b.is_negative, b.magnitude.copy())
     diff_ab = integer_subtraction(a, b)
     return modular_reduction(diff_ab, m)
 
