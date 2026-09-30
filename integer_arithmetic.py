@@ -1,11 +1,11 @@
 from radixConversion import SignAndMagnitude
 
 
-BASE = 2**16
+BASE = 2 ** 16
 
 
 
-def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs addition of two numbers a and b in base b.
     Keeps track of carry c and propagates it across all digits.
@@ -17,13 +17,13 @@ def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude
         SignAndMagnitude: The sum of a and b represented in sign and magnitude.
     """
     n = max(len(a.magnitude), len(b.magnitude)) 
-    c = SignAndMagnitude(False, [0])
+    c = SignAndMagnitude(False, [])
     carry = 0
 
     for i in range(n):
         # Pad the shorter list with zeros to make them the same length
-        ai = a[i] if i < len(a) else 0
-        bi = b[i] if i < len(b) else 0
+        ai = a.magnitude[i] if i < len(a.magnitude) else 0
+        bi = b[i] if i < len(b.magnitude) else 0
 
         # Temporary c digit at position i
         ci = ai + bi + carry
@@ -45,7 +45,7 @@ def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude
 
 
 
-def strip_zeros(self, a: SignAndMagnitude) -> list:
+def strip_zeros(a: SignAndMagnitude) -> list:
     """
     Removes leading zeros from a list of digits.
 
@@ -87,7 +87,7 @@ def compare(a: SignAndMagnitude, b: SignAndMagnitude) -> int:
                 return -1
         return 0
 
-def subtraction(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs subtraction of two numbers a and b in base BASE.
     Keeps track of borrow c and propagates it across all digits.
@@ -99,7 +99,7 @@ def subtraction(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnit
         c (SignAndMagnitude): The difference of a and b represented in sign and magnitude.
     """
     n = max(len(a.magnitude), len(b.magnitude))
-    c = SignAndMagnitude(False, [0])
+    c = SignAndMagnitude(False, [])
     carry = 0
 
     for i in range(len(a.magnitude)):
@@ -170,7 +170,7 @@ def karatsuba(a, b, n, base):
 
 
 
-def extended_auclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
+def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     """
     Performs the Extended Euclidean Algorithm on two numbers a and b.
     
