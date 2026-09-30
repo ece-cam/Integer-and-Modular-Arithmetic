@@ -178,7 +178,7 @@ def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndM
     return z
  
 def pad(a, n):
-        """
+    """
     Makes a number n digits long by adding zeros at the end of the list.
     Index 0 is the least significant digit, so the zeros at the end are
     leading zeros and the value of the number does not change.
