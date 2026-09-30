@@ -134,22 +134,48 @@ def integer_subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagn
 
 
 def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+        """
+    Performs multiplication of two numbers a and b in base BASE.
+    Multiplies every digit of a with every digit of b and propagates
+    the carry across all digits.
+ 
+    Args:
+        a (SignAndMagnitude): The first number represented in sign and magnitude.
+        b (SignAndMagnitude): The second number represented in sign and magnitude.
+    Returns:
+        z (SignAndMagnitude): The product of a and b represented in sign and magnitude.
+    """
+    
     m=len(a.magnitude)
     n=len(b.magnitude)
+
+    # The product has at most m + n digits and starts as all zeros.
+    # It is negative only if exactly one of a and b is negative
     z = SignAndMagnitude( a.is_negative != b.is_negative,[0] * (m + n))
     for i in range(0, m):  
+        # The carry starts at 0 for every digit of a
         c=0
         for j in range(0, n):  
+          # Temporary digit at position i+j: what is already there,
+          # plus the product of the two digits, plus the carry
           t = z.magnitude[i+j] + a.magnitude[i]*b.magnitude[j] + c
-          c = t // BASE               
-          z.magnitude[i + j] = t - c * BASE        
-        z.magnitude[i + n] = c
+            
+          # The carry is the part that does not fit in one digit
+          c = t // BASE   
 
+          # The digit that stays at position i+j
+          z.magnitude[i + j] = t - c * BASE
+            
+        # The leftover carry becomes the next digit
+        z.magnitude[i + n] = c
+        
+    # Remove leading zeros, the top digit can be 0
     z = strip_zeros(z)
+
+    # Zero has no sign, so avoid negative zero
     if z.magnitude == [0]:       
         z.is_negative = False
     return z
- 
  
 def pad(a, n):
     #pad function, used for making a number a n digits long.
