@@ -123,19 +123,24 @@ def subtraction(self, a: list, b: list) -> list:
 
 
 
-def primaryMultplication(a,b,b):
+def primaryMultiplication(a,b,base):
     m=len(a)
     n=len(b)
-    c = [0] * (m + n)   
+    z = [0] * (m + n)   
     for i in range(0, m):  
         c=0
         for j in range(0, n):  
-          t = c[i+j] + a[i]*b[j] + c
-          c = t // b               
-          c[i + j] = t - c * b        
-          c[i + n] = c     
-        c[i + n] = c
-    return strip_zeros(c)
+          t = z[i+j] + a[i]*b[j] + c
+          c = t // base               
+          z[i + j] = t - c * base        
+          z[i + n] = c     
+        z[i + n] = c
+    return strip_zeros(z)
+ 
+def pad(a, n):
+    #pad function, used for making a number a n digits long.
+    return a + [0] * (n - len(a))
+
 
 
 def extended_auclidian_algorithm(self, a: list, b: list) -> tuple:
