@@ -146,6 +146,28 @@ def pad(a, n):
     #pad function, used for making a number a n digits long.
     return a + [0] * (n - len(a))
 
+def karatsuba(a, b, n, base):
+    if n == 1:
+        return a * b
+
+    if n % 2 == 1:                              
+        n = n + 1
+    
+    a = pad(a, n)
+    b = pad(b, n)
+        
+    h = n // 2
+    a_low, a_high = a[:h], a[h:]                    
+    b_low, b_high = b[:h], b[h:]
+
+    z2 = karatsuba(a_high, b_high, h, base)              
+    z0 = karatsuba(a_low, b_low, h, base)              
+    z1 = karatsuba(a_high + a_low, b_high + b_low, h, base) - z0 - z2          
+
+    z = z2 * base ** n + z1 * base ** h + z0 
+    return strip_zeros(z)                               
+
+
 
 
 def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
