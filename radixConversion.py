@@ -65,7 +65,7 @@ def decode(number_str: str, radix: int) -> list:
     if radix < 2:
         raise ValueError("Radix must be greater than or equal to 2.")
 
-    number = SignAndMagnitude([0], False)
+    number = SignAndMagnitude(False, [0])
 
     # Handle negative numbers
     number.is_negative = False
@@ -77,7 +77,7 @@ def decode(number_str: str, radix: int) -> list:
     for d in number_str:
         digit = digit_value(d, radix)
         number.magnitude = insert_digit(number.magnitude, digit, radix)
-    return number.is_negative, number.magnitude
+    return number
 
 
 

@@ -5,7 +5,7 @@ BASE = 2 ** 16
 
 
 
-def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs addition of two numbers a and b in base b.
     Keeps track of carry c and propagates it across all digits.
@@ -22,8 +22,8 @@ def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude
 
     for i in range(n):
         # Pad the shorter list with zeros to make them the same length
-        ai = a[i] if i < len(a) else 0
-        bi = b[i] if i < len(b) else 0
+        ai = a.magnitude[i] if i < len(a.magnitude) else 0
+        bi = b[i] if i < len(b.magnitude) else 0
 
         # Temporary c digit at position i
         ci = ai + bi + carry
@@ -45,7 +45,7 @@ def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude
 
 
 
-def strip_zeros(self, a: SignAndMagnitude) -> list:
+def strip_zeros(a: SignAndMagnitude) -> list:
     """
     Removes leading zeros from a list of digits.
 
@@ -87,7 +87,7 @@ def compare(a: SignAndMagnitude, b: SignAndMagnitude) -> int:
                 return -1
         return 0
 
-def subtraction(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs subtraction of two numbers a and b in base BASE.
     Keeps track of borrow c and propagates it across all digits.
