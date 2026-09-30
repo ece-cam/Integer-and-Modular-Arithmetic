@@ -128,19 +128,24 @@ def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
 
 
 
-def primaryMultiplication(a,b,base):
-    m=len(a)
-    n=len(b)
-    z = [0] * (m + n)   
+def primaryMultiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
+    m=len(a.magnitude)
+    n=len(b.magnitude)
+    z = SignAndMagnitude( a.sign != b.sign,[0] * (m + n))
     for i in range(0, m):  
         c=0
         for j in range(0, n):  
-          t = z[i+j] + a[i]*b[j] + c
+          t = z.magnitude[i+j] + a.magnitude[i]*b.magnitude[j] + c
           c = t // base               
-          z[i + j] = t - c * base        
-          z[i + n] = c     
+          z.magnitude[i + j] = t - c * base        
+          z.magnitude[i + n] = c     
         z[i + n] = c
-    return strip_zeros(z)
+
+    z = strip_zeros(z)
+    if z.magnitude == [0]:       
+        z.is_negative = False
+    return z
+ 
  
 def pad(a, n):
     #pad function, used for making a number a n digits long.
