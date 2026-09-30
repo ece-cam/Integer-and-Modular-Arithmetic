@@ -19,7 +19,7 @@ import json
 from modular_arithmetic import modular_addition, modular_reduction
 from radixConversion import decode, encode, BASE, SignAndMagnitude
 from integer_arithmetic import extended_euclidian_algorithm, integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
-
+from modular_arithmetic import modular_reduction, modular_addition, modular_subtraction, modular_multiplication, modular_inversion
 
 
 def strToSignAndMagnitude(num_str: str, radix: int) -> SignAndMagnitude:
@@ -86,9 +86,9 @@ def solve_exercise(exercise_location : str, answer_location : str):
         elif exercise["operation"] == "extended_euclidean_algorithm":
             # Solve integer arithmetic extended euclidean algorithm exercise
             answer = {
-                "answer-a": signAndMagnitudeToStr(x, exercise["radix"]),
-                "answer-b": signAndMagnitudeToStr(y, exercise["radix"]),
-                "answer-gcd": signAndMagnitudeToStr(gcd, exercise["radix"]),
+                "answer-a": None,
+                "answer-b": None,
+                "answer-gcd": None,
             }
             
             a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
