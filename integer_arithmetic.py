@@ -125,7 +125,7 @@ def subtraction(self, x: list, y: list) -> list:
 
 
 
-def primaryMultplication(x,y,b):
+def primaryMultiplication(x,y,b):
     m=len(x)
     n=len(y)
     z = [0] * (m + n)   
