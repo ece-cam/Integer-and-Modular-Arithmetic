@@ -134,7 +134,7 @@ def integer_subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagn
 
 
 def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
-        """
+    """
     Performs multiplication of two numbers a and b in base BASE.
     Multiplies every digit of a with every digit of b and propagates
     the carry across all digits.
@@ -146,8 +146,8 @@ def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndM
         z (SignAndMagnitude): The product of a and b represented in sign and magnitude.
     """
     
-    m=len(a.magnitude)
-    n=len(b.magnitude)
+    m = len(a.magnitude)
+    n = len(b.magnitude)
 
     # The product has at most m + n digits and starts as all zeros.
     # It is negative only if exactly one of a and b is negative
