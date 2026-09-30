@@ -245,7 +245,7 @@ def integer_division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     return q, r
 
 
-def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
+def extended_euclidian_algorithm(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     """
     Performs the Extended Euclidean Algorithm on two numbers a and b.
     
@@ -260,8 +260,10 @@ def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude)
     b_prime = SignAndMagnitude(False, b.magnitude)
 
     # Set up initial values for x and y
-    x1, x2 = 1, 0
-    y1, y2 = 0, 1
+    x1 = SignAndMagnitude(False, [1])
+    x2 = SignAndMagnitude(False, [0])
+    y1 = SignAndMagnitude(False, [0])
+    y2 = SignAndMagnitude(False, [1])
 
     # Perform the Extended Euclidean Algorithm
     while b_prime.magnitude != [0]:
@@ -271,22 +273,36 @@ def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude)
         a_prime = b_prime
         b_prime = r
 
-        x3 = x1 - q * x2
-        y3 = y1 - q * y2
+        #x3 = x1 - q * x2
+        q_times_x2 = primaryMultiplication(q, x2, base)
+        q_times_x2.is_negative = not q_times_x2.is_negative 
+        x3 = addition(x1, q_times_x2)
+
+        #y3 = y1 - q * y2
+        q_times_y2 = primaryMultiplication(q, y2, base)
+        q_times_y2.is_negative = not q_times_y2.is_negative
+        y3 = addition(y1, q_times_y2)
+
 
         x1, x2 = x2, x3
         y1, y2 = y2, y3
 
 
     gcd = a_prime
-    if a >= 0:
-        x = x1
-    else:
-        x = -x1
-    if b >= 0:
-        y = y1
-    else:
-        y = -y1
+    #if a >= 0:
+    #    x = x1
+    #else:
+    #    x = -x1
+    #if b >= 0:
+    #    y = y1
+    #else:
+    #    y = -y1
+    x = SignAndMagnitude(x1.is_negative, x1.magnitude.copy())
+    if a.is_negative:
+        x.is_negative = not x.is_negative
         
+    y = SignAndMagnitude(y1.is_negative, y1.magnitude.copy())
+    if b.is_negative:
+        y.is_negative = not y.is_negative
     return gcd, x, y
     
