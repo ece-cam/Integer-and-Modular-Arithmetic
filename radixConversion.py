@@ -115,16 +115,3 @@ def encode(chunks, base, radix):
         return "0"
 
     return result
-
-
-
-
-if __name__ == "__main__":
-    # Example usage
-    number_str = "-1999"
-    radix = 16
-    sign_magnitude = decode(number_str, radix)
-    print(f"Decoded: {sign_magnitude.magnitude}, Negative: {sign_magnitude.is_negative}")
-
-    encoded_str = encode(sign_magnitude.magnitude, BASE, radix)
-    print(f"Encoded: {encoded_str}")
