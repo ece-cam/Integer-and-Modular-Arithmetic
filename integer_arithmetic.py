@@ -161,9 +161,9 @@ def pad(a, n):
     #pad function, used for making a number a n digits long.
     return a + [0] * (n - len(a))
 
-def karatsuba(a, b, n, base):
+def karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagnitude:
     if n == 1:
-        return a * b
+        return primaryMultiplication(a, b, base)
 
     if n % 2 == 1:                              
         n = n + 1
@@ -172,15 +172,24 @@ def karatsuba(a, b, n, base):
     b = pad(b, n)
         
     h = n // 2
-    a_low, a_high = a[:h], a[h:]                    
-    b_low, b_high = b[:h], b[h:]
+    a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
+    b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
     z2 = karatsuba(a_high, b_high, h, base)              
     z0 = karatsuba(a_low, b_low, h, base)              
     z1 = karatsuba(a_high + a_low, b_high + b_low, h, base) - z0 - z2          
 
-    z = z2 * base ** n + z1 * base ** h + z0 
-    return strip_zeros(z)                               
+    z = addition(
+        addition(
+            SignAndMagnitude(False, [0] * n + z2.magnitude),
+            SignAndMagnitude(False, [0] * h + z1.magnitude),
+        ),
+        z0,
+    )
+ 
+    z = strip_zeros(z)
+    z.is_negative = (a.is_negative != b.is_negative) and z.magnitude != [0]
+    return z
 
 
 
