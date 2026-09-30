@@ -17,7 +17,7 @@ def addition(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude
         SignAndMagnitude: The sum of a and b represented in sign and magnitude.
     """
     n = max(len(a.magnitude), len(b.magnitude)) 
-    c = SignAndMagnitude(False, [0])
+    c = SignAndMagnitude(False, [])
     carry = 0
 
     for i in range(n):
@@ -99,7 +99,7 @@ def subtraction(self, a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnit
         c (SignAndMagnitude): The difference of a and b represented in sign and magnitude.
     """
     n = max(len(a.magnitude), len(b.magnitude))
-    c = SignAndMagnitude(False, [0])
+    c = SignAndMagnitude(False, [])
     carry = 0
 
     for i in range(len(a.magnitude)):
