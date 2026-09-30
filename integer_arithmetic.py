@@ -194,33 +194,58 @@ def pad(a, n):
     return a + [0] * (n - len(a))
 
 def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n) -> SignAndMagnitude:
+      """
+    Performs multiplication of two numbers a and b using the Karatsuba algorithm.
+    Splits both numbers in a low and a high half and uses three recursive
+    multiplications instead of four:
+        a * b = z2 * BASE^n + z1 * BASE^(n/2) + z0
+ 
+    Args:
+        a (SignAndMagnitude): The first number represented in sign and magnitude.
+        b (SignAndMagnitude): The second number represented in sign and magnitude.
+        n (int): The number of digits of a and b.
+        base (int): The base of the digits.
+    Returns:
+        z (SignAndMagnitude): The product of a and b represented in sign and magnitude.
+    """
+    # A single digit is multiplied directly
     if n == 1:
         return integer_multiplication(a, b)
-
+        
+    # Make n even so both numbers can be split in two equal halves
     if n % 2 == 1:                              
         n = n + 1
-    
+        
+    # Add leading zeros so both numbers have n digits
     a = pad(a.magnitude, n)
     b = pad(b.magnitude, n)
-        
+
+    # Split both numbers at h = n/2, so that a = a_high * BASE^h + a_low    
     h = n // 2
     a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
     b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
+    # Multiply the high halves and the low halves
     z2 = integer_karatsuba(a_high, b_high, h)              
     z0 = integer_karatsuba(a_low, b_low, h)  
 
+    # The sums can have one digit more than h because of a carry
     sum_a = integer_addition(a_high, a_low)
     sum_b = integer_addition(b_high, b_low)      
 
+    # Middle term: (a_high + a_low)(b_high + b_low) - z0 - z2
     z1_recursive = integer_karatsuba(sum_a, sum_b, h)
-    z1 = integer_subtraction(integer_subtraction(z1_recursive, z0), z2)   
+    z1 = integer_subtraction(integer_subtraction(z1_recursive, z0), z2) 
 
+    # Multiplying by BASE^k is the same as putting k zeros in front of the list
     shifted_z2 = SignAndMagnitude(False, [0] * n + z2.magnitude)
     shifted_z1 = SignAndMagnitude(False, [0] * h + z1.magnitude)
-    
+
+    # Combine the three parts: z2 * BASE^n + z1 * BASE^h + z0
     z = integer_addition(integer_addition(shifted_z2, shifted_z1), z0)
- 
+
+    # Remove leading zeros and set the sign,
+    # negative only if exactly one of a and b is negative and the result is not zero
     z = strip_zeros(z)
     z.is_negative = (a.is_negative != b.is_negative) and z.magnitude != [0]
     return z
