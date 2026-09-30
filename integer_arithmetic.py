@@ -143,6 +143,11 @@ def primaryMultiplication(x,y,b):
           c[i + n] = c     
         c[i + n] = c
     return strip_zeros(c)
+ 
+def pad(a, n):
+    #pad function, used for making a number a n digits long.
+    return a + [0] * (n - len(a))
+
 
 
 def extended_auclidian_algorithm(self, a: list, b: list) -> tuple:
