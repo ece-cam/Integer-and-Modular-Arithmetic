@@ -128,27 +128,32 @@ def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
 
 
 
-def primaryMultiplication(a,b,base):
-    m=len(a)
-    n=len(b)
-    z = [0] * (m + n)   
+def primaryMultiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
+    m=len(a.magnitude)
+    n=len(b.magnitude)
+    z = SignAndMagnitude( a.sign != b.sign,[0] * (m + n))
     for i in range(0, m):  
         c=0
         for j in range(0, n):  
-          t = z[i+j] + a[i]*b[j] + c
+          t = z.magnitude[i+j] + a.magnitude[i]*b.magnitude[j] + c
           c = t // base               
-          z[i + j] = t - c * base        
-          z[i + n] = c     
+          z.magnitude[i + j] = t - c * base        
+          z.magnitude[i + n] = c     
         z[i + n] = c
-    return strip_zeros(z)
+
+    z = strip_zeros(z)
+    if z.magnitude == [0]:       
+        z.is_negative = False
+    return z
+ 
  
 def pad(a, n):
     #pad function, used for making a number a n digits long.
     return a + [0] * (n - len(a))
 
-def karatsuba(a, b, n, base):
+def karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagnitude:
     if n == 1:
-        return a * b
+        return primaryMultiplication(a, b, base)
 
     if n % 2 == 1:                              
         n = n + 1
@@ -157,15 +162,24 @@ def karatsuba(a, b, n, base):
     b = pad(b, n)
         
     h = n // 2
-    a_low, a_high = a[:h], a[h:]                    
-    b_low, b_high = b[:h], b[h:]
+    a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
+    b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
     z2 = karatsuba(a_high, b_high, h, base)              
     z0 = karatsuba(a_low, b_low, h, base)              
     z1 = karatsuba(a_high + a_low, b_high + b_low, h, base) - z0 - z2          
 
-    z = z2 * base ** n + z1 * base ** h + z0 
-    return strip_zeros(z)                               
+    z = addition(
+        addition(
+            SignAndMagnitude(False, [0] * n + z2.magnitude),
+            SignAndMagnitude(False, [0] * h + z1.magnitude),
+        ),
+        z0,
+    )
+ 
+    z = strip_zeros(z)
+    z.is_negative = (a.is_negative != b.is_negative) and z.magnitude != [0]
+    return z
 
 
 def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
