@@ -210,28 +210,29 @@ def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     m, n = len(a_abs.magnitude), len(b_abs.magnitude)
     k = m - n + 1   # Number of digits in the quotient
 
+    q_digits = [0] * max(k, 1)
     r = a_abs.copy()
-    q_digits = []
-    q_digits = pad(q_digits, max(k, 1))
 
+    # Main loop from most significant q digit to least.
     for i in range(k - 1, -1, -1):
-        shifted = SignAndMagnitude(False, [0] * i + b_abs.magnitude)   # b * BASE^i
+        # Shift the base of b to the left according to most significant digit
+        shifted = SignAndMagnitude(False, [0] * i + b_abs.magnitude)
+        
         qi = 0
-        while compare(r, shifted) != -1:   # while r >= b * BASE^i
+        while compare(r, shifted) != -1:
             r = subtraction(r, shifted)
             qi += 1
         q_digits[i] = qi
 
-    while len(q_digits) > 1 and q_digits[-1] == 0:   # strip leading zeros
-        q_digits.pop()
-    q = SignAndMagnitude(False, q_digits)
+    # Strip leading zeros from the quotient
+    q = strip_zeros(SignAndMagnitude(False, q_digits))
 
-    # Sign fix so that 0 <= r < |b|
-    if a.negative and r.magnitude != [0]:
+    # Fix sign
+    if a.is_negative and r.magnitude != [0]:
         q = addition(q, SignAndMagnitude(False, [1]))
         r = subtraction(b_abs, r)
 
-    q.negative = (a.negative != b.negative) and q.magnitude != [0]
+    q.is_negative = (a.is_negative != b.is_negative) and q.magnitude != [0]
     return q, r
 
 
