@@ -141,15 +141,14 @@ def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
 def primaryMultiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
     m=len(a.magnitude)
     n=len(b.magnitude)
-    z = SignAndMagnitude( a.sign != b.sign,[0] * (m + n))
+    z = SignAndMagnitude( a.is_negative != b.is_negative,[0] * (m + n))
     for i in range(0, m):  
         c=0
         for j in range(0, n):  
           t = z.magnitude[i+j] + a.magnitude[i]*b.magnitude[j] + c
           c = t // base               
           z.magnitude[i + j] = t - c * base        
-          z.magnitude[i + n] = c     
-        z[i + n] = c
+        z.magnitude[i + n] = c
 
     z = strip_zeros(z)
     if z.magnitude == [0]:       
@@ -168,24 +167,26 @@ def karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagni
     if n % 2 == 1:                              
         n = n + 1
     
-    a = pad(a, n)
-    b = pad(b, n)
+    a = pad(a.magnitude, n)
+    b = pad(b.magnitude, n)
         
     h = n // 2
     a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
     b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
     z2 = karatsuba(a_high, b_high, h, base)              
-    z0 = karatsuba(a_low, b_low, h, base)              
-    z1 = karatsuba(a_high + a_low, b_high + b_low, h, base) - z0 - z2          
+    z0 = karatsuba(a_low, b_low, h, base)  
 
-    z = addition(
-        addition(
-            SignAndMagnitude(False, [0] * n + z2.magnitude),
-            SignAndMagnitude(False, [0] * h + z1.magnitude),
-        ),
-        z0,
-    )
+    sum_a = addition(a_high, a_low)
+    sum_b = addition(b_high, b_low)      
+
+    z1_recursive = karatsuba(sum_a, sum_b, h, base)
+    z1 = subtraction(subtraction(z1_recursive, z0), z2)   
+
+    shifted_z2 = SignAndMagnitude(False, [0] * n + z2.magnitude)
+    shifted_z1 = SignAndMagnitude(False, [0] * h + z1.magnitude)
+    
+    z = addition(addition(shifted_z2, shifted_z1), z0)
  
     z = strip_zeros(z)
     z.is_negative = (a.is_negative != b.is_negative) and z.magnitude != [0]
