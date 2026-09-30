@@ -168,6 +168,28 @@ def karatsuba(a, b, n, base):
     return strip_zeros(z)                               
 
 
+def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
+    """
+    Performs division of two numbers a and b in base BASE.
+
+    Args:
+        a (SignAndMagnitude): The dividend represented in sign and magnitude.
+        b (SignAndMagnitude): The divisor represented in sign and magnitude.
+    Returns:
+        tuple: A tuple containing the quotient and remainder of the division.
+    """
+    if compare(a, b) == -1:
+        a = b.copy()
+        b = a.copy()
+
+    # 
+    q = SignAndMagnitude(False, [0])
+    r = a
+    k = 
+
+
+
+    return q, r
 
 
 def extended_euclidian_algorithm(self, a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
