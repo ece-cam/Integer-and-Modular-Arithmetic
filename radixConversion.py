@@ -63,7 +63,7 @@ def encode(chunks, base, radix):
     if radix > 16:
         raise ValueError("Radix must be smaller than or equal to 16")
     
-    chunks = chunks.copy() #work on a copy of chunks so the original stays untouched
+    chunks = chunks.copy() # Work on a copy of chunks so the original stays untouched
     result = "" 
 
     # While loop runs until the whole number has been divided down to zero
@@ -72,9 +72,9 @@ def encode(chunks, base, radix):
 
         # Long Division: Divide the whole number by radix, starting at the biggest chunk
         for i in range(len(chunks) - 1, -1, -1):
-            value = remainder * base + chunks[i] #leftover from above + this chunk = number to divide now
-            chunks[i] = value // radix #quotient: stays in this chunk
-            remainder = value % radix #remainder: passed down to the next chunk
+            value = remainder * base + chunks[i] # leftover from above + this chunk = number to divide now
+            chunks[i] = value // radix # quotient: stays in this chunk
+            remainder = value % radix # remainder: passed down to the next chunk
 
         # The final remainder is the next digit (last digit first)
         if remainder < 10:
@@ -82,9 +82,9 @@ def encode(chunks, base, radix):
         else:
             digit = chr(ord("A") + remainder - 10) # Account for the 10 offset
 
-        result = digit + result #add the new digits at the front
+        result = digit + result # Add the new digits at the front
 
-    if result == "":  # the number is zero
+    if result == "":  # The number is zero
         return "0"
 
     return result
