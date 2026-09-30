@@ -80,18 +80,25 @@ def solve_exercise(exercise_location : str, answer_location : str):
             # Solve integer arithmetic karatsuba multiplication exercise
             a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
             b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            result = integer_karatsuba(a, b)
+            result = integer_karatsuba(a, b, max(len(a.magnitude), len(b.magnitude)))
             answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
         elif exercise["operation"] == "extended_euclidean_algorithm":
             # Solve integer arithmetic extended euclidean algorithm exercise
+            answer = {
+                "answer-a": signAndMagnitudeToStr(x, exercise["radix"]),
+                "answer-b": signAndMagnitudeToStr(y, exercise["radix"]),
+                "answer-gcd": signAndMagnitudeToStr(gcd, exercise["radix"]),
+            }
+            
             a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
             b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
             gcd, x, y = extended_euclidian_algorithm(a, b)
-            answer_a = {"answer": signAndMagnitudeToStr(gcd, exercise["radix"])}
-            answer_b = {"answer": signAndMagnitudeToStr(x, exercise["radix"])}
-            answer_c = {"answer": signAndMagnitudeToStr(y, exercise["radix"])}
-
+            answer = {
+                "answer-a": signAndMagnitudeToStr(x, exercise["radix"]),
+                "answer-b": signAndMagnitudeToStr(y, exercise["radix"]),
+                "answer-gcd": signAndMagnitudeToStr(gcd, exercise["radix"]),
+            }
         # et cetera
     else: # exercise["type"] == "modular_arithmetic"
         # Check what operation within the modular arithmetic operations we need to solve
