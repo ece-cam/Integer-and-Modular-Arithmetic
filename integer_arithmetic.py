@@ -123,10 +123,17 @@ def subtraction(self, a: list, b: list) -> list:
 
 
 
+<<<<<<< HEAD
 def primaryMultplication(a,b,b):
     m=len(a)
     n=len(b)
     c = [0] * (m + n)   
+=======
+def primaryMultiplication(x,y,b):
+    m=len(x)
+    n=len(y)
+    z = [0] * (m + n)   
+>>>>>>> 11dd119f8ae8619c94e2473e2db3cfc88e94cae7
     for i in range(0, m):  
         c=0
         for j in range(0, n):  
