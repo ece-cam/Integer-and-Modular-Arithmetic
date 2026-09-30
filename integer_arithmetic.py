@@ -5,7 +5,7 @@ BASE = 2 ** 16
 
 
 
-def addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def integer_addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs addition of two numbers a and b in base b.
     Keeps track of carry c and propagates it across all digits.
@@ -98,7 +98,7 @@ def compare(a: SignAndMagnitude, b: SignAndMagnitude) -> int:
                 return -1
         return 0
 
-def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
+def integer_subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     """
     Performs subtraction of two numbers a and b in base BASE.
     Keeps track of borrow c and propagates it across all digits.
@@ -138,7 +138,7 @@ def subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
 
 
 
-def primaryMultiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
+def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
     m=len(a.magnitude)
     n=len(b.magnitude)
     z = SignAndMagnitude( a.is_negative != b.is_negative,[0] * (m + n))
@@ -160,9 +160,9 @@ def pad(a, n):
     #pad function, used for making a number a n digits long.
     return a + [0] * (n - len(a))
 
-def karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagnitude:
+def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagnitude:
     if n == 1:
-        return primaryMultiplication(a, b, base)
+        return integer_multiplication(a, b, base)
 
     if n % 2 == 1:                              
         n = n + 1
@@ -174,26 +174,26 @@ def karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n, base) -> SignAndMagni
     a_low, a_high = SignAndMagnitude(False, a.magnitude[:h]), SignAndMagnitude(False, a.magnitude[h:])
     b_low, b_high = SignAndMagnitude(False, b.magnitude[:h]), SignAndMagnitude(False, b.magnitude[h:])
 
-    z2 = karatsuba(a_high, b_high, h, base)              
-    z0 = karatsuba(a_low, b_low, h, base)  
+    z2 = integer_karatsuba(a_high, b_high, h, base)              
+    z0 = integer_karatsuba(a_low, b_low, h, base)  
 
-    sum_a = addition(a_high, a_low)
-    sum_b = addition(b_high, b_low)      
+    sum_a = integer_addition(a_high, a_low)
+    sum_b = integer_addition(b_high, b_low)      
 
-    z1_recursive = karatsuba(sum_a, sum_b, h, base)
-    z1 = subtraction(subtraction(z1_recursive, z0), z2)   
+    z1_recursive = integer_karatsuba(sum_a, sum_b, h, base)
+    z1 = integer_subtraction(integer_subtraction(z1_recursive, z0), z2)   
 
     shifted_z2 = SignAndMagnitude(False, [0] * n + z2.magnitude)
     shifted_z1 = SignAndMagnitude(False, [0] * h + z1.magnitude)
     
-    z = addition(addition(shifted_z2, shifted_z1), z0)
+    z = integer_addition(integer_addition(shifted_z2, shifted_z1), z0)
  
     z = strip_zeros(z)
     z.is_negative = (a.is_negative != b.is_negative) and z.magnitude != [0]
     return z
 
 
-def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
+def integer_division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
     """
     Performs division of two numbers a and b in base BASE.
 
@@ -228,15 +228,15 @@ def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
         lo, hi = 0, BASE - 1
         while lo < hi:
             mid = (lo + hi + 1) // 2   
-            prod = primaryMultiplication(SignAndMagnitude(False, [mid]), shifted, BASE)
+            prod = integer_multiplication(SignAndMagnitude(False, [mid]), shifted, BASE)
             if compare(prod, r) != 1:
                 lo = mid
             else:
                 hi = mid - 1
         qi = lo
 
-        prod = primaryMultiplication(SignAndMagnitude(False, [qi]), shifted, BASE)
-        r = subtraction(r, prod)
+        prod = integer_multiplication(SignAndMagnitude(False, [qi]), shifted, BASE)
+        r = integer_subtraction(r, prod)
         q_digits[i] = qi
 
     # Strip leading zeros from the quotient
@@ -244,8 +244,8 @@ def division(a: SignAndMagnitude, b: SignAndMagnitude) -> tuple:
 
     # Fix sign
     if a.is_negative and r.magnitude != [0]:
-        q = addition(q, SignAndMagnitude(False, [1]))
-        r = subtraction(b_abs, r)
+        q = integer_addition(q, SignAndMagnitude(False, [1]))
+        r = integer_subtraction(b_abs, r)
 
     q.is_negative = (a.is_negative != b.is_negative) and q.magnitude != [0]
     return q, r
@@ -273,7 +273,7 @@ def extended_euclidian_algorithm(a: SignAndMagnitude, b: SignAndMagnitude) -> tu
 
     # Perform the Extended Euclidean Algorithm
     while b_prime.magnitude != [0]:
-        q, r = division(a_prime, b_prime)
+        q, r = integer_division(a_prime, b_prime)
 
         # Update a_prime and b_prime for the next iteration
         a_prime = b_prime

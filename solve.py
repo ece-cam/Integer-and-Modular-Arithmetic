@@ -16,7 +16,21 @@
 
 # Import built-in json library for handling input/output 
 import json
-from radixConversion import radixConversion
+from .radixConversion import decode, encode, BASE, SignAndMagnitude
+from .integer_arithmetic import integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
+
+
+
+def strToSignAndMagnitude(num_str: str, radix: int) -> SignAndMagnitude:
+    return decode(num_str, radix)
+
+def signAndMagnitudeToStr(num: SignAndMagnitude, radix: int) -> str:
+    if num.is_negative:
+        if strip_zeros(num).magnitude == [0]:
+            return "0"
+        return "-" + encode(num.magnitude, BASE, radix)
+    return encode(num.magnitude, BASE, radix)
+
 
 
 
@@ -34,16 +48,27 @@ def solve_exercise(exercise_location : str, answer_location : str):
         
 
     ### Parse and solve ###
+    answer = {"answer": None}
+
 
     # Check type of exercise
     if exercise["type"] == "integer_arithmetic":
         # Check what operation within the integer arithmetic operations we need to solve
         if exercise["operation"] == "addition":
             # Solve integer arithmetic addition exercise
-            pass
+            integer_addition()
         elif exercise["operation"] == "subtraction":
             # Solve integer arithmetic subtraction exercise
-            pass
+            integer_subtraction()
+        elif exercise["operation"] == "multiplication":
+            # Solve integer arithmetic multiplication exercise
+            integer_multiplication()
+        elif exercise["operation"] == "karatsuba":
+            # Solve integer arithmetic karatsuba multiplication exercise
+            integer_karatsuba()
+        elif exercise["operation"] == "division":
+            # Solve integer arithmetic division exercise
+            integer_division()
         # et cetera
     else: # exercise["type"] == "modular_arithmetic"
         # Check what operation within the modular arithmetic operations we need to solve
