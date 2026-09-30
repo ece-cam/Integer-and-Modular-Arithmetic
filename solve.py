@@ -16,8 +16,8 @@
 
 # Import built-in json library for handling input/output 
 import json
-from .radixConversion import decode, encode, BASE, SignAndMagnitude
-from .integer_arithmetic import extended_euclidian_algorithm, integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
+from radixConversion import decode, encode, BASE, SignAndMagnitude
+from integer_arithmetic import extended_euclidian_algorithm, integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
 
 
 

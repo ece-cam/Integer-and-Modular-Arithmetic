@@ -1,10 +1,11 @@
-from .integer_arithmetic import (
+from integer_arithmetic import (
     SignAndMagnitude, 
     addition, 
     primaryMultiplication, 
     subtraction, 
     division, 
-    compare
+    compare,
+    BASE
 )
 
 

@@ -18,10 +18,10 @@ def integer_addition(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitu
     """
     if a.is_negative != b.is_negative:
         if compare(a, b) >= 0:
-            c = subtraction(a, b)
+            c = integer_subtraction(a, b)
             c.is_negative = a.is_negative
         else:
-            c = subtraction(b, a)
+            c = integer_subtraction(b, a)
             c.is_negative = b.is_negative
         return c
 
@@ -138,7 +138,7 @@ def integer_subtraction(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagn
 
 
 
-def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> SignAndMagnitude:
+def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude) -> SignAndMagnitude:
     m=len(a.magnitude)
     n=len(b.magnitude)
     z = SignAndMagnitude( a.is_negative != b.is_negative,[0] * (m + n))
@@ -146,8 +146,8 @@ def integer_multiplication(a: SignAndMagnitude, b: SignAndMagnitude,base)-> Sign
         c=0
         for j in range(0, n):  
           t = z.magnitude[i+j] + a.magnitude[i]*b.magnitude[j] + c
-          c = t // base               
-          z.magnitude[i + j] = t - c * base        
+          c = t // BASE               
+          z.magnitude[i + j] = t - c * BASE        
         z.magnitude[i + n] = c
 
     z = strip_zeros(z)
@@ -280,14 +280,14 @@ def extended_euclidian_algorithm(a: SignAndMagnitude, b: SignAndMagnitude) -> tu
         b_prime = r
 
         #x3 = x1 - q * x2
-        q_times_x2 = primaryMultiplication(q, x2, base)
+        q_times_x2 = integer_multiplication(q, x2, BASE)
         q_times_x2.is_negative = not q_times_x2.is_negative 
-        x3 = addition(x1, q_times_x2)
+        x3 = integer_addition(x1, q_times_x2)
 
         #y3 = y1 - q * y2
-        q_times_y2 = primaryMultiplication(q, y2, base)
+        q_times_y2 = integer_multiplication(q, y2, BASE)
         q_times_y2.is_negative = not q_times_y2.is_negative
-        y3 = addition(y1, q_times_y2)
+        y3 = integer_addition(y1, q_times_y2)
 
 
         x1, x2 = x2, x3
