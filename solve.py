@@ -16,9 +16,8 @@
 
 # Import built-in json library for handling input/output 
 import json
-from modular_arithmetic import modular_addition, modular_reduction
 from radixConversion import decode, encode, BASE, SignAndMagnitude
-from integer_arithmetic import extended_euclidian_algorithm, integer_division, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
+from integer_arithmetic import extended_euclidian_algorithm, integer_karatsuba, strip_zeros, integer_addition, integer_subtraction, integer_multiplication
 from modular_arithmetic import modular_reduction, modular_addition, modular_subtraction, modular_multiplication, modular_inversion
 
 
@@ -51,65 +50,95 @@ def solve_exercise(exercise_location : str, answer_location : str):
     ### Parse and solve ###
     answer = {"answer": None}
 
+    try:
+        # Check type of exercise
+        if exercise["type"] == "integer_arithmetic":
+            # Check what operation within the integer arithmetic operations we need to solve
+            if exercise["operation"] == "addition":
+                # Solve integer arithmetic addition exercise
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = integer_addition(a, b)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-    # Check type of exercise
-    if exercise["type"] == "integer_arithmetic":
-        # Check what operation within the integer arithmetic operations we need to solve
-        if exercise["operation"] == "addition":
-            # Solve integer arithmetic addition exercise
-            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
-            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            result = integer_addition(a, b)
-            answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+            elif exercise["operation"] == "subtraction":
+                # Solve integer arithmetic subtraction exercise
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = integer_subtraction(a, b)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-        elif exercise["operation"] == "subtraction":
-            # Solve integer arithmetic subtraction exercise
-            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
-            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            result = integer_subtraction(a, b)
-            answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+            elif exercise["operation"] == "multiplication_primary":
+                # Solve integer arithmetic multiplication exercise
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = integer_multiplication(a, b)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-        elif exercise["operation"] == "multiplication_primary":
-            # Solve integer arithmetic multiplication exercise
-            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
-            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            result = integer_multiplication(a, b)
-            answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+            elif exercise["operation"] == "multiplication_karatsuba":
+                # Solve integer arithmetic karatsuba multiplication exercise
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = integer_karatsuba(a, b, max(len(a.magnitude), len(b.magnitude)))
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-        elif exercise["operation"] == "multiplication_karatsuba":
-            # Solve integer arithmetic karatsuba multiplication exercise
-            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
-            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            result = integer_karatsuba(a, b, max(len(a.magnitude), len(b.magnitude)))
-            answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+            elif exercise["operation"] == "extended_euclidean_algorithm":
+                # Solve integer arithmetic extended euclidean algorithm exercise
+                answer = {
+                    "answer-a": None,
+                    "answer-b": None,
+                    "answer-gcd": None,
+                }
+                
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                gcd, x, y = extended_euclidian_algorithm(a, b)
+                answer = {
+                    "answer-a": signAndMagnitudeToStr(x, exercise["radix"]),
+                    "answer-b": signAndMagnitudeToStr(y, exercise["radix"]),
+                    "answer-gcd": signAndMagnitudeToStr(gcd, exercise["radix"]),
+                }
+            # et cetera
+        else: # exercise["type"] == "modular_arithmetic"
+            # Check what operation within the modular arithmetic operations we need to solve
+            if exercise["operation"] == "reduction":
+                # Solve modular arithmetic reduction exercise
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["modulus"], exercise["radix"])
+                result = modular_reduction(a, b)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-        elif exercise["operation"] == "extended_euclidean_algorithm":
-            # Solve integer arithmetic extended euclidean algorithm exercise
-            answer = {
-                "answer-a": None,
-                "answer-b": None,
-                "answer-gcd": None,
-            }
-            
-            a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
-            b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-            gcd, x, y = extended_euclidian_algorithm(a, b)
-            answer = {
-                "answer-a": signAndMagnitudeToStr(x, exercise["radix"]),
-                "answer-b": signAndMagnitudeToStr(y, exercise["radix"]),
-                "answer-gcd": signAndMagnitudeToStr(gcd, exercise["radix"]),
-            }
-        # et cetera
-    else: # exercise["type"] == "modular_arithmetic"
-        # Check what operation within the modular arithmetic operations we need to solve
-        if exercise["operation"] == "reduction":
-            # Solve modular arithmetic reduction exercise
-            modular_reduction()
-        elif exercise["operation"] == "addition":
-            # Solve modular arithmetic addition exercise
-            modular_addition()
+            elif exercise["operation"] == "addition":
+                # Solve modular arithmetic addition exercise
+                m = strToSignAndMagnitude(exercise["modulus"], exercise["radix"])
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = modular_addition(a, b, m)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
-        # et cetera
+            elif exercise["operation"] == "subtraction":
+                m = strToSignAndMagnitude(exercise["modulus"], exercise["radix"])
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = modular_subtraction(a, b, m)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+
+            elif exercise["operation"] == "multiplication":
+                m = strToSignAndMagnitude(exercise["modulus"], exercise["radix"])
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
+                result = modular_multiplication(a, b, m)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+
+            elif exercise["operation"] == "inversion":
+                a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
+                b = strToSignAndMagnitude(exercise["modulus"], exercise["radix"])
+                result = modular_inversion(a, b)
+                answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
+
+    except Exception as e:
+        print(f"Error while solving exercise {exercise_location}: {e}")  
+
 
 
     # Open file at answer_location for writing, creating the file if it does not exist yet
