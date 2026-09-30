@@ -65,7 +65,7 @@ def solve_exercise(exercise_location : str, answer_location : str):
                 # Solve integer arithmetic subtraction exercise
                 a = strToSignAndMagnitude(exercise["x"], exercise["radix"])
                 b = strToSignAndMagnitude(exercise["y"], exercise["radix"])
-                result = integer_subtraction(a, b)
+                result = integer_addition(a, SignAndMagnitude(not b.is_negative, b.magnitude))
                 answer = {"answer": signAndMagnitudeToStr(result, exercise["radix"])}
 
             elif exercise["operation"] == "multiplication_primary":

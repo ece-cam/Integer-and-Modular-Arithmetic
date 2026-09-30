@@ -18,7 +18,7 @@ def modular_addition(a: SignAndMagnitude, b: SignAndMagnitude, m: SignAndMagnitu
 
 def modular_subtraction(a: SignAndMagnitude, b: SignAndMagnitude, m: SignAndMagnitude) -> SignAndMagnitude:
     neg_b = SignAndMagnitude(not b.is_negative, b.magnitude.copy())
-    diff_ab = integer_subtraction(a, b)
+    diff_ab = integer_addition(a, neg_b)
     return modular_reduction(diff_ab, m)
 
 def modular_multiplication(a: SignAndMagnitude, b: SignAndMagnitude, m: SignAndMagnitude) -> SignAndMagnitude:
@@ -39,7 +39,7 @@ def modular_inversion(a, m) -> SignAndMagnitude:
     """
 
     # Work on the copies so the original inputs are untouched
-    a_prime = SignAndMagnitude(False, a.magnitude.copy())
+    a_prime = modular_reduction(a, m)
     m_prime = SignAndMagnitude(False, m.magnitude.copy())
 
     # Set up initial values of x1 and x2

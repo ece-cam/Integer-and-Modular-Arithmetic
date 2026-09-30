@@ -217,8 +217,8 @@ def integer_karatsuba(a: SignAndMagnitude, b: SignAndMagnitude, n) -> SignAndMag
         n = n + 1
         
     # Add leading zeros so both numbers have n digits
-    a = pad(a.magnitude, n)
-    b = pad(b.magnitude, n)
+    a.magnitude = pad(a.magnitude, n)
+    b.magnitude = pad(b.magnitude, n)
 
     # Split both numbers at h = n/2, so that a = a_high * BASE^h + a_low    
     h = n // 2
